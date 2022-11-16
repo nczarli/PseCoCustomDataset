@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -x
 
-CONFIG=configs/PseCo/PseCo_faster_rcnn_r50_caffe_fpn_coco_180k.py   
+CONFIG=configs/PseCo/PseCo_faster_rnn_celoss_r50_caffe_fpn_coco_custom.py   
 work_dir=./work_dir/          # define your experiment path here
 
 FOLD=1
