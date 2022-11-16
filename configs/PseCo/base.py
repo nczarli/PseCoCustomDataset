@@ -38,14 +38,14 @@ train_pipeline = [
                     dict(type=k)
                     for k in [
                         "Identity",
-                        "AutoContrast",
-                        "RandEqualize",
-                        "RandSolarize",
-                        "RandColor",
-                        "RandContrast",
-                        "RandBrightness",
-                        "RandSharpness",
-                        "RandPosterize",
+                        #"AutoContrast",
+                        #"RandEqualize",
+                        #"RandSolarize",
+                        #"RandColor",
+                        #"RandContrast",
+                        #"RandBrightness",
+                        #"RandSharpness",
+                        #"RandPosterize",
                     ]
                 ],
             ),
@@ -91,14 +91,14 @@ strong_pipeline = [
                             dict(type=k)
                             for k in [
                                 "Identity",
-                                "AutoContrast",
-                                "RandEqualize",
-                                "RandSolarize",
-                                "RandColor",
-                                "RandContrast",
-                                "RandBrightness",
-                                "RandSharpness",
-                                "RandPosterize",
+                                #"AutoContrast",
+                                #"RandEqualize",
+                                #"RandSolarize",
+                                #"RandColor",
+                                #"RandContrast",
+                                #"RandBrightness",
+                                #"RandSharpness",
+                                #"RandPosterize",
                             ]
                         ],
                     ),
@@ -237,7 +237,7 @@ data = dict(
             sample_ratio=[1, 4],
             by_prob=True,
             # at_least_one=True,
-            epoch_length=7330,
+            epoch_length=200,
         )
     ),
 )
@@ -250,7 +250,7 @@ custom_hooks = [
     dict(type="WeightSummary"),
     dict(type="MeanTeacher", momentum=0.999, warm_up=0),
 ]
-evaluation = dict(type="SubModulesDistEvalHook", interval=10000, start=20000)
+evaluation = dict(type="SubModulesDistEvalHook", interval=200, start=200)
 optimizer = dict(type="SGD", lr=0.01, momentum=0.9, weight_decay=0.0001)   
 lr_config = dict(step=[120000])
 runner = dict(_delete_=True, type="IterBasedRunner", max_iters=180000)
@@ -259,7 +259,7 @@ checkpoint_config = dict(by_epoch=False, interval=5000, max_keep_ckpts=10, creat
 fp16 = dict(loss_scale="dynamic")
 
 log_config = dict(
-    interval=50,   
+    interval=1,   
     hooks=[
         dict(type="TextLoggerHook", by_epoch=False),
     ],

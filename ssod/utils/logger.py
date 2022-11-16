@@ -99,7 +99,7 @@ def log_image_with_boxes(
     filename: str = None,
     img_norm_cfg: dict = None,
     backend: str = "auto",
-    interval: int = 50,
+    interval: int = 10,
 ):
     rank, _ = get_dist_info()
     if rank != 0:
