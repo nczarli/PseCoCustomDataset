@@ -171,6 +171,7 @@ data = dict(
             classes=classes,
             ann_file="labels_generated/unlabelled/annotations/instances_default.json",
             img_prefix="labels_generated/unlabelled/images/",
+            pipeline=unsup_pipeline,
         ),
     ),
     val=dict(
