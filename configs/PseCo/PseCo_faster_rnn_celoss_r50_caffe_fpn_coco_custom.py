@@ -223,5 +223,9 @@ custom_hooks = [
     dict(type="GetCurrentIter")
 ]
 
+
+find_unused_parameters=False 
+backend="disk"
+
 evaluation = dict(type="SubModulesDistEvalHook", interval=200, start=200)
 runner = dict(_delete_=True, type="IterBasedRunner", max_iters=400)
