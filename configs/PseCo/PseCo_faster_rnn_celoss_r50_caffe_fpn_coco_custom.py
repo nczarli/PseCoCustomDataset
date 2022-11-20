@@ -23,7 +23,13 @@ model = dict(
             featmap_strides=[8, 16, 32, 64]),
         bbox_head=dict(
             type='Shared2FCBBoxHead',
-            num_classes=num_classes),
+            num_classes=num_classes,
+            loss_cls=dict(
+                type='FocalLoss',
+                use_sigmoid=True,
+                gamma=2.0,
+                alpha=0.25,
+                loss_weight=10.0)),
     ),
     train_cfg=dict(
         rcnn=dict(
