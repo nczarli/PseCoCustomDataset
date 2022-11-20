@@ -244,6 +244,17 @@ class PseCo_FRCNN(MultiSteamDetector):
                             GT_labels=gt_labels,
                             teacher_infos=teacher_infos)
 
+        log_image_with_boxes(
+            "rcnn_cls",
+            student_img[0],
+            gt_bboxes[0],
+            bbox_tag="pseudo_label",
+            labels=gt_labels[0],
+            class_names=self.CLASSES,
+            interval=10,
+            img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
+        )
+
         loss.update(rcnn_losses)
         loss["precision"] = self.precision
         loss["recall"] = self.recall
