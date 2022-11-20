@@ -38,14 +38,14 @@ train_pipeline = [
                     dict(type=k)
                     for k in [
                         "Identity",
-                        #"AutoContrast",
-                        #"RandEqualize",
-                        #"RandSolarize",
-                        #"RandColor",
-                        #"RandContrast",
-                        #"RandBrightness",
-                        #"RandSharpness",
-                        #"RandPosterize",
+                        "AutoContrast",
+                        "RandEqualize",
+                        "RandSolarize",
+                        "RandColor",
+                        "RandContrast",
+                        "RandBrightness",
+                        "RandSharpness",
+                        "RandPosterize",
                     ]
                 ],
             ),
@@ -91,14 +91,14 @@ strong_pipeline = [
                             dict(type=k)
                             for k in [
                                 "Identity",
-                                #"AutoContrast",
-                                #"RandEqualize",
-                                #"RandSolarize",
-                                #"RandColor",
-                                #"RandContrast",
-                                #"RandBrightness",
-                                #"RandSharpness",
-                                #"RandPosterize",
+                                "AutoContrast",
+                                "RandEqualize",
+                                "RandSolarize",
+                                "RandColor",
+                                "RandContrast",
+                                "RandBrightness",
+                                "RandSharpness",
+                                "RandPosterize",
                             ]
                         ],
                     ),
@@ -262,5 +262,17 @@ log_config = dict(
     interval=1,   
     hooks=[
         dict(type="TextLoggerHook", by_epoch=False),
+        dict(
+            type="WandbLoggerHook",
+            init_kwargs=dict(
+                project="pre_release",
+                name="${cfg_name}",
+                config=dict(
+                    work_dirs="${work_dir}",
+                    total_step="${runner.max_iters}",
+                ),
+            ),
+            by_epoch=False,
+        ),
     ],
 )
