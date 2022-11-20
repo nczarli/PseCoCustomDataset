@@ -14,6 +14,7 @@ from mmdet.models import BaseDetector, TwoStageDetector, DETECTORS, build_detect
 from mmdet.models.builder import build_loss
 
 from ssod.utils.structure_utils import dict_split, weighted_loss
+from ssod.utils import log_image_with_boxes, log_every_n
 from ssod.datasets.pipelines.rand_aug import visualize_bboxes
 
 from .multi_stream_detector import MultiSteamDetector
@@ -138,6 +139,7 @@ class PseCo_FRCNN(MultiSteamDetector):
         else:
             proposal_list = proposals
 
+
         # RCNN forward and loss 
         roi_losses = self.student.roi_head.forward_train(x, img_metas, proposal_list,
                                                 gt_bboxes, gt_labels,
@@ -182,6 +184,16 @@ class PseCo_FRCNN(MultiSteamDetector):
         stu_rpn_outs, rpn_losses = self.unsup_rpn_loss(
                 feats, pseudo_bboxes, pseudo_labels, img_metas_student)
         loss.update(rpn_losses)
+
+        log_image_with_boxes(
+                "rpn",
+                student_img[0],
+                pseudo_bboxes[0][:, :4],
+                bbox_tag="rpn_pseudo_label",
+                scores=pseudo_bboxes[0][:, 4],
+                interval=10,
+                img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
+            )
         
         if self.use_MSL:
             # construct View 2 to learn feature-level scale invariance
@@ -254,8 +266,10 @@ class PseCo_FRCNN(MultiSteamDetector):
             )
             gt_bboxes_rpn.append(bbox) 
 
+
         stu_rpn_loss_inputs = stu_rpn_outs + ([bbox.float() for bbox in gt_bboxes_rpn], img_metas)
         rpn_losses = self.student.rpn_head.loss(*stu_rpn_loss_inputs)
+
         return stu_rpn_outs, rpn_losses
 
     def unsup_rcnn_cls_loss(self,
