@@ -185,15 +185,16 @@ class PseCo_FRCNN(MultiSteamDetector):
                 feats, pseudo_bboxes, pseudo_labels, img_metas_student)
         loss.update(rpn_losses)
 
-        log_image_with_boxes(
-                "rpn",
-                student_img[0],
-                pseudo_bboxes[0][:, :4],
-                bbox_tag="rpn_pseudo_label",
-                scores=pseudo_bboxes[0][:, 4],
-                interval=10,
-                img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
-            )
+        if len(pseudo_bboxes[0]) > 0:
+            log_image_with_boxes(
+                    "rpn",
+                    student_img[0],
+                    pseudo_bboxes[0][:, :4],
+                    bbox_tag="rpn_pseudo_label",
+                    scores=pseudo_bboxes[0][:, 4],
+                    interval=10,
+                    img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
+                )
         
         if self.use_MSL:
             # construct View 2 to learn feature-level scale invariance
@@ -243,17 +244,17 @@ class PseCo_FRCNN(MultiSteamDetector):
                             GT_bboxes=gt_bboxes,
                             GT_labels=gt_labels,
                             teacher_infos=teacher_infos)
-
-        log_image_with_boxes(
-            "rcnn_cls",
-            student_img[0],
-            gt_bboxes[0],
-            bbox_tag="pseudo_label",
-            labels=gt_labels[0],
-            class_names=self.CLASSES,
-            interval=10,
-            img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
-        )
+        if len(gt_bboxes[0]) > 0:
+            log_image_with_boxes(
+                "rcnn_cls",
+                student_img[0],
+                gt_bboxes[0],
+                bbox_tag="pseudo_label",
+                labels=gt_labels[0],
+                class_names=self.CLASSES,
+                interval=10,
+                img_norm_cfg=img_metas_student[0]["img_norm_cfg"],
+            )
 
         loss.update(rcnn_losses)
         loss["precision"] = self.precision
